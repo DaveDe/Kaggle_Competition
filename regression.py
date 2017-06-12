@@ -1,11 +1,15 @@
 #After testing, the following adjustments can be made:
-#Reduce categories of nominal values that have a frequency of x% (currently 5%)
 
+#Reduce categories of nominal values that have a frequency of x% (currently 5%)
+#Adjust the number of features PCA returns (currently 50)
 
 import numpy as np
 import pandas as pd
 import csv
 import codecs
+from sklearn import decomposition #for pca
+from sklearn.linear_model import LinearRegression
+
 
 def mergeCategory(feature,category):
 	for index,item in enumerate(feature):
@@ -66,4 +70,24 @@ X = X.astype(np.int)
 #at this point, X consists of all relevent features, broken down into binary
 #Y consists of the associated value which we are trying to later predict
 
+
+#############################################  FEATURE SELECTION  ##############################################
+
 #Feature selection performed on X:
+
+#PCA
+pca = decomposition.PCA(n_components=50)
+pca.fit(X)
+X = pca.transform(X)
+
+
+#############################################  REGRESSION MODELS  ##############################################
+
+#get test data
+
+#make single function that takes all input data and returns binary training data and Y
+
+#use linear regression model
+model = LinearRegression()
+model.fit(X,Y)
+#prediction = model.predict(training_data_test)
