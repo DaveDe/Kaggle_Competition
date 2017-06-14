@@ -2,6 +2,7 @@
 
 #Reduce categories of nominal values that have a frequency of x% (currently 5%)
 #Adjust the number of features PCA returns (currently 50)
+#ANN: change activation function: {‘identity’, ‘logistic’, ‘tanh’, ‘relu’} and # of nodes in hidden layer (currently 100)
 
 import numpy as np
 import pandas as pd
@@ -9,7 +10,8 @@ import csv
 import codecs
 from sklearn import decomposition #for pca
 from sklearn.linear_model import LinearRegression
-
+from sklearn.neural_network import MLPRegressor 
+from sklearn.preprocessing import PolynomialFeatures
 
 def mergeCategory(feature,category):
 	for index,item in enumerate(feature):
@@ -100,11 +102,18 @@ X_test = convertNominalToBinary(binary_features,nominal_features)
 pca.fit(X_test)
 X_test = pca.transform(X_test)
 
-#use linear regression model
+#use linear or polynomial regression model
+poly = PolynomialFeatures(degree=2)
+X_train = poly.fit_transform(X_train)
+X_test = poly.fit_transform(X_test)
 model = LinearRegression()
 model.fit(X_train,Y_train)
 prediction = model.predict(X_test)
 
+#ANN
+#model = MLPRegressor(hidden_layer_sizes=(100,),solver="lbfgs",activation="relu")
+#model.fit(X_train,Y_train)
+#prediction = model.predict(X_test)
 
 #write submission file
 submission_prediction = prediction.astype(str)
