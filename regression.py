@@ -12,6 +12,7 @@ from sklearn import decomposition #for pca
 from sklearn.linear_model import LinearRegression
 from sklearn.neural_network import MLPRegressor 
 from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import ElasticNet
 
 def mergeCategory(feature,category):
 	for index,item in enumerate(feature):
@@ -82,7 +83,7 @@ Y_train = data[1:,1].reshape(len(data)-1,1).astype(np.float)
 #Feature selection performed on X:
 
 #PCA
-pca = decomposition.PCA(n_components=50)
+pca = decomposition.PCA(n_components=40)
 pca.fit(X_train)
 X_train = pca.transform(X_train)
 
@@ -103,17 +104,21 @@ pca.fit(X_test)
 X_test = pca.transform(X_test)
 
 #use linear or polynomial regression model
-poly = PolynomialFeatures(degree=2)
+"""poly = PolynomialFeatures(degree=2)
 X_train = poly.fit_transform(X_train)
 X_test = poly.fit_transform(X_test)
 model = LinearRegression()
 model.fit(X_train,Y_train)
-prediction = model.predict(X_test)
+prediction = model.predict(X_test)"""
 
 #ANN
-#model = MLPRegressor(hidden_layer_sizes=(100,),solver="lbfgs",activation="relu")
-#model.fit(X_train,Y_train)
-#prediction = model.predict(X_test)
+"""model = MLPRegressor(hidden_layer_sizes=(100,),solver="lbfgs",activation="relu")
+model.fit(X_train,Y_train)
+prediction = model.predict(X_test)"""
+
+model = ElasticNet(alpha=1, l1_ratio=0.7)
+model.fit(X_train,Y_train)
+prediction = model.predict(X_test)
 
 #write submission file
 submission_prediction = prediction.astype(str)
