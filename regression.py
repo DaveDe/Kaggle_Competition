@@ -13,6 +13,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.neural_network import MLPRegressor 
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import ElasticNet
+from sklearn.ensemble import RandomForestRegressor
 
 def mergeCategory(feature,category):
 	for index,item in enumerate(feature):
@@ -116,7 +117,11 @@ prediction = model.predict(X_test)"""
 model.fit(X_train,Y_train)
 prediction = model.predict(X_test)"""
 
-model = ElasticNet(alpha=1, l1_ratio=0.7)
+"""model = ElasticNet(alpha=1, l1_ratio=0.7)
+model.fit(X_train,Y_train)
+prediction = model.predict(X_test)"""
+
+model = RandomForestRegressor()
 model.fit(X_train,Y_train)
 prediction = model.predict(X_test)
 
